@@ -1,0 +1,16 @@
+[Unit]
+Description=FLSUN_pushraker: keep pushraker installed at the pinned version
+Wants=network-online.target
+After=network-online.target flsun-timesync.service moonraker.service
+
+[Service]
+# Runs at boot (a FLSun firmware update can undo changes) and whenever
+# Moonraker restarts it after updating FLSUN_pushraker. Type=simple so that
+# restart returns at once: sync.sh may restart Moonraker itself.
+Type=simple
+ExecStart=/home/pi/FLSUN_pushraker/sync.sh
+# Let a sync finish even if this unit is restarted again meanwhile.
+KillMode=none
+
+[Install]
+WantedBy=multi-user.target
