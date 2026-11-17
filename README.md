@@ -51,7 +51,7 @@ The [Push Notifications guide](https://github.com/noon92/pushraker/blob/main/doc
 
 ## Updating pushraker
 
-When a new pushraker release comes out, this repo's `requirements.txt` is bumped. The update then shows in Mainsail's and Fluidd's update manager like any other.
+This repo checks PyPI once a day for a new pushraker release. When there is one, it opens a pull request that bumps the version in `requirements.txt` and says whether the settings-page fix is still needed. The PR is tested on a T1 and then merged, and the update then shows in Mainsail's and Fluidd's update manager like any other.
 
 To update by hand: `cd ~/FLSUN_pushraker && git pull && sudo ./sync.sh`.
 
