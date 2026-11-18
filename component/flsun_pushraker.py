@@ -125,6 +125,7 @@ class FlsunPushraker:
 
         attempts._flsun_card = True  # type: ignore[attr-defined]
         push._attempts = attempts
+        logging.info(f"{LOG} cards know which notification they are")
 
     # ---- the wrapper -------------------------------------------------------
 
