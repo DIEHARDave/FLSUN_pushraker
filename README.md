@@ -6,6 +6,8 @@ Push notifications for the **FLSun T1 Pro**, from [pushraker](https://github.com
 
 You set everything up on pushraker's own page at `http://<printer-ip>/notifications/`, and changes apply live, with no restart.
 
+<p align="center"><img src="docs/images/settings-page.png" alt="pushraker settings page on the T1 Pro" width="480"></p>
+
 This repo is the installer and updater for the T1 Pro. pushraker itself comes from PyPI, at the version pinned in [`requirements.txt`](requirements.txt).
 
 ## What it does
@@ -30,6 +32,11 @@ A Discord message gets the same fields as FLSUN_notify's cards, under pushraker'
 - During a print: a progress bar, then Print Time, ETA (shown in each reader's own time zone) and Layer, then File.
 - When a print ends: ✅ Completed or 🚫 Cancelled, with Total Time and File.
 - The printer's name and the time it was sent, in the footer.
+
+<p align="center">
+  <img src="docs/images/discord-started.png" alt="Discord card: print started, with the sliced model preview" width="320">
+  <img src="docs/images/discord-progress-complete.png" alt="Discord cards: 50% progress and print complete, with camera snapshots" width="320">
+</p>
 
 The color follows the printer: green while printing or complete, orange when paused, blue when ready. pushraker's error and failure notifications stay red. The camera snapshot stays inside the card, below the fields.
 
