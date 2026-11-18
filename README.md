@@ -1,5 +1,7 @@
 # FLSUN_pushraker
 
+> **Archived 2026-11-18.** This plugin is now part of [diehard-pushraker](https://github.com/DIEHARDave/diehard-pushraker), one plugin for Kiln OS, Zmod and the FLSUN T1 (same features, plus the update notices). Your notification settings carry over: see its README, *Moving from the old plugins*.
+
 > **Parts:** the printers, boards, readers and other gear that go with this project are listed at [projects.die-hard.net/gear](https://projects.die-hard.net/gear) (Amazon affiliate links).
 
 Push notifications for the **FLSun T1 Pro**, from [pushraker](https://github.com/noon92/pushraker) by noon92. Get notified when a print starts, pauses, finishes or is cancelled, at progress marks, after the first layer, and on faults and shutdowns. Notifications come with a camera snapshot. They go out through [Apprise](https://github.com/caronc/apprise) to ntfy, Pushover, Gotify, Telegram, Discord, a webhook or email.
