@@ -37,6 +37,9 @@ if [ -x "${VENV}/bin/python" ]; then
     "${VENV}/bin/pip" uninstall -y -q pushraker || true
 fi
 
+msg "Removing the Discord card component"
+rm -f "${HOME}/moonraker/moonraker/components/flsun_pushraker.py" "${HOME}/printer_data/.flsun_pushraker_component"
+
 msg "Removing the Moonraker settings"
 sed -i '/^\[include flsun_pushraker\.conf\]/d' "$MOONRAKER_CONF"
 rm -f "${CONFIG_DIR}/flsun_pushraker.conf"

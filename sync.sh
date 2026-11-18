@@ -80,6 +80,27 @@ if echo "$out" | grep -q '^Updated: .*\.cfg$'; then
     restart_klipper=1
 fi
 
+msg "Linking the Discord card component"
+# FLSUN_notify's card layout for pushraker's Discord messages
+# (component/flsun_pushraker.py; [flsun_pushraker] discord_cards).
+COMPONENT="${HOME_DIR}/moonraker/moonraker/components/flsun_pushraker.py"
+if [ "$(readlink "$COMPONENT" 2> /dev/null)" != "${REPO_DIR}/component/flsun_pushraker.py" ]; then
+    as_user ln -sfn "${REPO_DIR}/component/flsun_pushraker.py" "$COMPONENT"
+    restart_moonraker=1
+fi
+CONF="${HOME_DIR}/printer_data/config/flsun_pushraker.conf"
+if [ -f "$CONF" ] && ! grep -q '^\[flsun_pushraker\]' "$CONF"; then
+    printf '\n%s\n' "$(sed -n '/^\[flsun_pushraker\]/,$p' "${REPO_DIR}/config/flsun_pushraker.conf")" >> "$CONF"
+    restart_moonraker=1
+fi
+# An update changes the component's code, but Moonraker only restarts
+# this service; it loads the new code when restarted.
+STAMP="${HOME_DIR}/printer_data/.flsun_pushraker_component"
+sum=$(sha256sum "${REPO_DIR}/component/flsun_pushraker.py" | cut -d' ' -f1)
+if [ "$(cat "$STAMP" 2> /dev/null)" != "$sum" ]; then
+    restart_moonraker=1
+fi
+
 WEB=$(as_user "$PY" -c 'import os, pushraker; print(os.path.join(os.path.dirname(pushraker.__file__), "web"))')
 if [ "$(python3 -I "${REPO_DIR}/tools/fix_page.py" "${WEB}/index.html")" = "fixed" ]; then
     msg "Fixed the settings page's Save and Send Test (Filament change row)"
@@ -135,6 +156,8 @@ if [ "$restart_moonraker" = 1 ]; then
     done
     sleep 5
 fi
+# Moonraker runs this version of the component now
+printf '%s\n' "$sum" > "$STAMP"
 if [ "$restart_klipper" = 1 ]; then
     state=$(print_state)
     case "$state" in
