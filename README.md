@@ -17,9 +17,23 @@ This repo is the installer and updater for the T1 Pro. pushraker itself comes fr
 - Serves the settings page at `/notifications/` in Mainsail (port 80) and in Fluidd (port 81, if [FLSUN_Updater](https://github.com/DIEHARDave/FLSUN_Updater) installed it).
 - Updates from Mainsail's and Fluidd's update manager. After an update, the `flsun_pushraker` service installs the pinned pushraker version. It restarts only what changed, and restarts Klipper only when no print is running.
 - Checks itself at every boot, so a FLSun firmware update can't leave it half removed.
+- Lays out Discord messages as [FLSUN_notify](https://github.com/DIEHARDave/FLSUN_notify)'s status cards (see [Discord cards](#discord-cards)).
 - Fixes a bug in pushraker 0.3.6's settings page, where Save & Apply and Send Test fail with "Cannot read properties of null (reading 'checked')" on printers other than the Snapmaker U1. The fix has been sent upstream, and this step does nothing once a pushraker release includes it.
 
 The print-complete and cancel snapshots are taken before the nozzle parks. `PRINT_END` in [FLSUN_Macros](https://github.com/DIEHARDave/FLSUN_Macros), and `END_PRINT` and `CANCEL_PRINT` in [FLSUN_klipper](https://github.com/DIEHARDave/FLSUN_klipper), call pushraker's hooks when it is installed. Update those two as well.
+
+## Discord cards
+
+A Discord message gets the same fields as FLSUN_notify's cards, under pushraker's title and text:
+
+- Status, Extruder Temp and Bed Temp, side by side.
+- During a print: a progress bar, then Print Time, ETA (shown in each reader's own time zone) and Layer, then File.
+- When a print ends: ✅ Completed or 🚫 Cancelled, with Total Time and File.
+- The printer's name and the time it was sent, in the footer.
+
+The color follows the printer: green while printing or complete, orange when paused, blue when ready. pushraker's error and failure notifications stay red. The camera snapshot stays inside the card, below the fields.
+
+This is done by a small Moonraker component in this repo, `component/flsun_pushraker.py`, without changing pushraker's files. If a pushraker release changes what it hooks into, pushraker's plain Discord message goes out instead. To turn the cards off, set `discord_cards: False` under `[flsun_pushraker]` in `~/printer_data/config/flsun_pushraker.conf` and restart Moonraker.
 
 ## Requirements
 
